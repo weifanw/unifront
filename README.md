@@ -1,7 +1,7 @@
 # Unifront
 This Latex package gives your notes a unique front page for every chapter and section.
 
-# Introduction
+## Introduction
 This package can help you format your notes easily and give them a unique front page for every chapter and section.
 
 It automatically calculates your progress and then displays the progress bar under the title.
@@ -12,9 +12,12 @@ You still need to enter your current completed titles, you can easily do this wi
 
 It also displays a partial table of contents under every progress bar and only shows the subdirectories of the current part. 
 
-# How to use
+## How to use
 Simply download unifront.sty and put it in the same directory as your .tex file.
 
 And then follow the instruction in unifront.pdf.
 
 You can also check example.pdf and example.tex to get an overall experience.
+
+## License
+This project is licensed under the LaTeX Project Public License - see the [LICENSE.txt](LICENSE.txt) file for details
