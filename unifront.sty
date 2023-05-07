@@ -1,0 +1,218 @@
+%% unifront.sty
+%% Copyright 2023 Weifan Wei
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Weifan Wei
+%
+% This work consists of the files unifront.dtx and unifront.sty.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{unifront}[2023/05/04 v1.0 Unique front structure]
+
+%  Package requirements
+\RequirePackage{xcolor}
+\RequirePackage{calc}
+
+% Page setup
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.1 in}
+\setlength{\topmargin}{-0.7 in}
+\setlength{\textwidth}{6.1 in}
+\setlength{\textheight}{9.5 in}
+\setlength{\headsep}{0.4 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0 in}
+
+% Global variables
+\newcommand{\front@size}{0.97\textwidth}
+\newcommand{\bars@vertical@size}{1ex}
+
+% Colour setup
+\definecolor{my@red}{RGB}{255, 0, 0}
+\definecolor{my@blue}{RGB}{26, 140, 255}
+\definecolor{my@yellow}{RGB}{255, 255, 0}
+\definecolor{my@gray}{RGB}{191, 191, 191}
+
+% Default colour
+\newcommand{\bar@colour}{my@blue}
+\newcommand{\bar@other@half}{my@gray}
+
+% The options of this package
+\DeclareOption{red}{%
+    \renewcommand{\bar@colour}{my@red}%
+    \PackageInfo{unifront}{bar's colour has been set to red}%
+}
+\DeclareOption{blue}{%
+    \renewcommand{\bar@colour}{my@blue}%
+    \PackageInfo{unifront}{bar's colour has been set to blue}%
+}
+\DeclareOption{yellow}{%
+    \renewcommand{\bar@colour}{my@yellow}%
+    \PackageInfo{unifront}{bar's colour has been set to yellow}%
+}
+\DeclareOption{help}{%
+    \PackageWarningNoLine{unifront}{Go to https://github.com/weifanw/unifront for more information}
+    \PackageInfo{unifront}{bar's colour has been set to yellow}%
+}
+\DeclareOption*{%
+    \PackageWarning{unifront}{Unknown Colour ‘\CurrentOption’, You can choose from 'red', 'blue', 'yellow', 'help'}%
+    \PackageInfo{unifront}{bar's colour retain the default}%
+}
+\ProcessOptions\relax
+
+% Print content line
+\newcounter{chapter@counter}
+\newcounter{section@counter}[chapter]
+\newcounter{subsection@counter}[section]
+\newcounter{odd@even}
+
+\newcommand{\print@chapter@line}[1]{%
+    \contentsline{chapter}{%
+        \numberline{\thechapter@counter}#1%
+    }{%
+        \pageref{#1}%
+    }\\
+    \PackageInfo{unifront}{content line '#1' has been generate}%
+}
+\newcommand{\print@section@line}[1]{%
+    \contentsline{section}{%
+        \numberline{\ref{#1}}#1%
+    }{%
+        \pageref{#1}%
+    }\\
+    \PackageInfo{unifront}{content line '#1' has been generate}%
+}
+\newcommand{\print@subsection@line}[1]{%
+    \contentsline{subsection}{%
+        \numberline{\ref{#1}}#1%
+    }{%
+        \pageref{#1}%
+    }\\
+    \PackageInfo{unifront}{content line '#1' has been generate}%
+}
+
+% Count current elements
+\newcommand{\count@chapters}[2]{%
+    \refstepcounter{chapter@counter}%
+    \currentchapter{#2}%
+}
+\newcommand{\count@sections}[2]{%
+    \refstepcounter{section@counter}%
+    \currentsections{#2}%
+}
+\newcommand{\count@subsections}[2]{%
+    \refstepcounter{subsection@counter}%
+    \currentsubsections{#2}%
+}
+
+% Get current elements
+\newcommand{\currentchapter}[1]{%
+    \ifodd\theodd@even{%
+        \PackageInfo{unifront}{print chapter's content line '#1' }%
+        \print@chapter@line{#1}%
+    }%
+    \fi
+    \@ifnextchar\bgroup{%
+        \PackageInfo{unifront}{count chapter '#1' }%
+        \count@chapters{#1}%
+    }{%
+        \refstepcounter{chapter@counter}%
+    }%
+}
+\newcommand{\currentsections}[1]{%
+    \ifodd\theodd@even{%
+        \PackageInfo{unifront}{print section's content line '#1' }%
+        \print@section@line{#1}%
+    }%
+    \fi
+    \@ifnextchar\bgroup{%
+        \PackageInfo{unifront}{count section '#1' }%
+        \count@sections{#1}%
+    }{%
+        \refstepcounter{section@counter}%
+    }%
+}
+\newcommand{\currentsubsections}[1]{%
+    \ifodd\theodd@even{%
+        \PackageInfo{unifront}{print subsection's content line '#1' }%
+        \print@subsection@line{#1}%
+    }\fi
+    \@ifnextchar\bgroup{%
+        \PackageInfo{unifront}{count subsection '#1' }%
+        \count@subsections{#1}%
+    }{%
+        \refstepcounter{subsection@counter}%
+    }%
+}
+
+% Print the corresponding progress bar
+\newcommand{\progress@bar}[2]{%
+    \textcolor{\bar@colour}{%
+        \rule{\front@size * #1 / \real{#2}}{\bars@vertical@size}%
+    }%
+    \textcolor{\bar@other@half}{%
+        \rule{\front@size - \front@size * #1 / \real{#2}}{\bars@vertical@size}%
+    }%
+    \setcounter{chapter@counter}{1}%
+}
+
+% Generate the corresponding front page
+\newcommand{\newtitle}[3]{%
+    \title{#1}%
+    \clearpage
+    \pagestyle{myheadings}%
+    \thispagestyle{empty}%
+    \begin{center}%
+    \begin{tabular}{p{\front@size}}%
+    \maketitle\\
+    \setcounter{odd@even}{2}#3%
+    \progress@bar{\value{chapter@counter}}{#2}\\
+    \setcounter{odd@even}{1}%
+    #3%
+    \end{tabular}%
+    \end{center}%
+    \PackageInfo{unifront}{new report #1's front page has been generate}%
+    \newpage%
+    \setcounter{page}{1}%
+}
+\newcommand{\newchapter}[3]{%
+    \clearpage
+    \thispagestyle{plain}%
+    \begin{center}%
+    \begin{tabular}{p{\front@size}}%
+    \chapter{#1}\\\label{#1}%
+    \setcounter{odd@even}{2}#3%
+    \progress@bar{\value{section@counter}}{#2}\\
+    \setcounter{odd@even}{1}%
+    {\bf\Large#3}%
+    \end{tabular}%
+    \end{center}%
+    \markboth{#1}{#1}%
+    \PackageInfo{unifront}{new chapter #1's front page has been generate}%
+}
+\newcommand{\newsection}[3]{%
+    \clearpage
+    \thispagestyle{plain}%
+    \begin{center}%
+    \begin{tabular}{p{\front@size}}%
+    \section{#1}\label{#1}%
+    \setcounter{odd@even}{2}#3%
+    \progress@bar{\value{subsection@counter}}{#2}\\
+    \setcounter{odd@even}{1}%
+    \bf#3%
+    \end{tabular}%
+    \end{center}%
+    \PackageInfo{unifront}{new section #1's front page has been generate}%
+}
+\newcommand{\newsubsection}[1]{%
+    \subsection{#1}\label{#1}%
+}
+\endinput

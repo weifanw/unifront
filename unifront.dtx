@@ -1,0 +1,174 @@
+% \iffalse meta-comment
+%% unifront.dtx
+%% Copyright 2023 Weifan Wei
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Weifan Wei
+%
+% This work consists of the files unifront.dtx and unifront.sty.
+% \fi
+% \iffalse
+%<*driver>
+\ProvidesFile{unifront.dtx}[2023-05-07 v1.0 Unique front structure]
+\documentclass{ltxdoc}
+\title{An Unique Front for Your Notes}
+\author{Weifan Wei}
+\date{2023/05/07}
+\begin{document}
+\maketitle
+  \DocInput{unifront.dtx}
+\end{document}
+%</driver>
+% \fi
+% \section{Introduction}
+% This package can help you format your notes easily and give them a unique front page for every chapter and section.
+%It automatically calculates your progress and then displays the progress bar under the title.You can also customise the colour of the bar.
+%You still need to enter your current completed titles, and You can easily do this with a command that accepts Variable Arguments. Still, that also helped you review your notes.
+%It also displays a partial table of contents under every progress bar and only shows the subdirectories of the current part. 
+% \section{Commands}
+% \begin{macro}{\usepackage}
+% \cmd{\usepackage\oarg{options}\{unifront\}} \\
+% \oarg{options}: You can choose from 'red', 'blue', 'yellow', 'help'.
+% \end{macro}
+%
+% \begin{macro}{\currentchapter}
+% \cmd{\currentchapter\marg{chapter name}\marg{chapter name}...\marg{chapter name}...}\\
+% You can put many \marg{chapter name} as you want after \cmd{\currentchapter} .\\
+% \marg{chapter name}: The name of completed chapter.
+% \end{macro}
+%
+% \begin{macro}{\currentsections}
+% \cmd{\currentsections\marg{section name}\marg{section name}...\marg{section name}...}\\
+% You can put many \marg{section name} as you want after \cmd{\currentsections}.\\
+% \marg{section name}: The name of completed section.
+% \end{macro}
+%
+% \begin{macro}{\currentsubsections}
+% \cmd{\currentsubsections\marg{subsection name}...\marg{subsection name}...}\\
+% You can put many \marg{subsection name} as you want after \cmd{\currentsubsections}.\\
+% \marg{subsection name}: The name of completed subsection.
+% \end{macro}
+%
+% \begin{macro}{\newtitle}
+% \cmd{\newtitle\marg{title name}\marg{number of chapters}\{\cs{currentchapter}\marg{n}\marg{n}...\}}\\
+% It generate the front page for your document.\\
+% \marg{title name}: The name of your document.\\
+% \marg{number of chapters}: The total number of the chapters you are planing to do.\\
+% \{\cs{currentchapter}\marg{n}...\}: Put the name of each completed chapter in to \marg{n} in order. 
+% \end{macro}
+%
+% \begin{macro}{\newchapter}
+% \cmd{\newchapter\marg{chapter name}\marg{number of sections}\{\cs{currentsection}\marg{n}\marg{n}...\}}\\
+% It generate the front page for the current chapter.\\
+% \marg{chapter name}: The name of the chapter.\\
+% \marg{number of sections}: The total number of the sections you are planing to do.\\
+% \{\cs{currentsection}\marg{n}...\}: Put the name of each completed section in to \marg{n} in order. 
+% \end{macro}
+%
+% \begin{macro}{\newsection}
+% \cmd{\newsection\marg{section name}\marg{number of subsections}\{\cs{currentsubsection}\marg{n}\marg{n}...\}}\\
+% It generate the front page for the current section.\\
+% \marg{section name}: The name of the section.\\
+% \marg{number of subsections}: The total number of the subsections you are planing to do.\\
+% \{\cs{currentsection}\marg{n}...\}: Put the name of each completed subsection in to \marg{n} in order. 
+% \end{macro}
+%
+% \begin{macro}{\newsubsection}
+% \cmd{\newsubsection\marg{subsection name}}\\
+% It give you a subsection \\
+% \marg{subsection name}: The name of the subsection.
+% \end{macro}
+%
+% \section{Example}
+% The basic structure should look like the following:\footnote{Go to \url{https://github.com/weifanw/unifront} for more information}
+\begin{verbatim}
+%% Preset
+\documentclass[a4paper, twoside]{report}
+
+\usepackage[blue]{unifront}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\graphicspath{{images/}}
+
+%% Document information
+\author{Weifan W.}
+\date{04/05/2023}
+
+%% Document start from here
+\begin{document}
+
+\newtitle{This is a title name}{5}{\currentchapter{chapter1name}{chapter2name}}
+
+%% Chapter1 start from here
+\newchapter{chapter1name}{12}{\currentsections{section1name}{section2name}{section3name}{section4name}}
+
+%% section1 start from here
+\newsection{section1name}{5}{\currentsubsections{subsection1name}{subsection2name}}
+This is a sentence.
+
+\newsubsection{subsection1name}
+This is a sentence.
+
+\newsubsection{subsection2name}
+This is a sentence.
+
+%% section2 start from here
+\newsection{section2name}{5}{\currentsubsections{subsection3name}}
+
+\newsubsection{subsection3name}
+This is a sentence.
+
+%% section3 start from here
+\newsection{section3name}{4}{\currentsubsections{subsection4name}{subsection5name}{subsection6name}{subsection7name}}
+This is a sentence.
+
+\newsubsection{subsection4name}
+This is a sentence.
+
+\newsubsection{subsection5name}
+This is a sentence.
+
+\newsubsection{subsection6name}
+This is a sentence.
+
+%% section4 start from here
+\newsection{section4name}{5}{\currentsubsections{subsection7name}}
+
+\newsubsection{subsection7name}
+This is a sentence.
+
+%% Chapter2 start from here
+\newchapter{chapter2name}{9}{\currentsections{section5name}{section6name}}
+
+%% section5 start from here
+\newsection{section5name}{5}{\currentsubsections{subsection8name}{subsection9name}}
+
+\newsubsection{subsection8name}
+This is a sentence.
+
+\newsubsection{subsection9name}
+This is a sentence.
+
+%% section6 start from here
+\newsection{section6name}{5}{\currentsubsections{subsection10name}{subsection11name}}
+
+\newsubsection{subsection10name}
+This is a sentence.
+
+\newsubsection{subsection11name}
+This is a sentence.
+
+\end{document}
+\end{verbatim}
+% \Finale
+%
+\endinput
