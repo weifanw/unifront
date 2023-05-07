@@ -1,7 +1,7 @@
 # Unifront
 This Latex package gives your notes a unique front page for every chapter and section.
 
-## Introduction
+## Description
 This package can help you format your notes easily and give them a unique front page for every chapter and section.
 
 It automatically calculates your progress and then displays the progress bar under the title.
@@ -19,5 +19,8 @@ And then follow the instruction in unifront.pdf.
 
 You can also check example.pdf and example.tex to get an overall experience.
 
+## Contributing
+Pull request always welcome!
+
 ## License
-This project is licensed under the LaTeX Project Public License - see the [LICENSE.txt](LICENSE.txt) file for details
+This project is licensed under the LaTeX Project Public License - see the [LICENSE.txt](LICENSE.txt) file for details.
